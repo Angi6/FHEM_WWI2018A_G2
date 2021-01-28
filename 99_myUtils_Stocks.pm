@@ -19,85 +19,68 @@ myUtils_Initialize($$)
   return;
 }
 
-# Enter you functions below _this_ line.
-sub addDevice($){
-	my ($deviceName) = @_;
-	
-	if (!(IsWe())) {
-	
-	fhem("define $deviceName HTTPMOD https://www.finanzen.net/suchergebnis.asp?_search=$deviceName 600");
-	
-	} 
-	else {
-	 fhem("define $deviceName HTTPMOD https://www.finanzen.net/suchergebnis.asp?_search=$deviceName 43200");
-	
-	}
 
-	
-	
-	return undef;
-
-
-}
-# returns pointer to device
-
-#sub updateDevice($);
-# returns pointer to updated device, or log message
-
-sub addAttributes($){
-	my ($deviceName) = @_;
-	
-	#fhem("attr $deviceName event-on-change-reading state);
-	
-	
-	fhem("attr $deviceName room Aktien");
-	
-	#Regex für Name
-	fhem("attr $deviceName reading01Name Name");
-	fhem("attr $deviceName reading01Regex <h1 class=.font-resize.>([\\w\\W]{2,50}).Aktie");
-	
-	
-	#Regex für den Kurs
-	fhem("attr $deviceName reading02Name Price");
-	fhem("attr $deviceName reading02Regex class=.col-xs-5 col-sm-4 text-sm-right text-nowrap.>([\\d\\W].{1,15})<span>EUR");
-	
-	
-	#Regex für die Veränderung
-	fhem("attr $deviceName reading03Name RelativeChange");
-	fhem("attr $deviceName reading03Regex EUR.{1,18}<div class=.col-xs-3.col-sm-3.text-right.text-nowrap[\\w\\W]{0,50}.>(.\\d*\\S\\d*)<span>%");
-	
-	
-	fhem("attr $deviceName stateFormat Name: Price €");
-	
-	
-	#Log3 $deviceName, 3, "$change_rel";
-	
-	#Veränderung absolut
-	fhem("attr $deviceName reading04Name AbsolutChange");
-	fhem("attr $deviceName reading04Regex class=.col-xs-4.col-sm-3.text-sm-right.text-nowrap.text-center[\\w\\W]{0,50}.>(.\\d*\\S\\d*).{1,20}EUR");
-	
-	getFirstPrice($deviceName);
-	return undef;
-	
-	}
-
-# returns value array from given wkn
-
+#Master-Function, ruft alle Funktionen auf, die initial beim Hinzufügen des Geräts aufgerufen werden sollen
 sub addStock($){
 	my ($deviceName) = @_;
 	addDevice($deviceName);
 	addAttributes($deviceName);
 	create_Logfile("./log/$deviceName-%d-%m-%Y.log", 3, "Filelog für $deviceName created", "$deviceName");
 	
-	
-	
-	
-	
 	return "$deviceName wurde hinzugefügt";
 
 
 }
 
+#Fügt leeres Aktiengerät hinzu
+sub addDevice($){
+	my ($deviceName) = @_;
+	
+	fhem("define $deviceName HTTPMOD https://www.finanzen.net/suchergebnis.asp?_search=$deviceName 600");
+
+	
+	return undef;
+
+
+}
+
+
+#Fügt Attribute und Readings hinzu
+sub addAttributes($){
+	my ($deviceName) = @_;
+	
+	
+	fhem("attr $deviceName room Aktien");
+	
+	#Regex für den Name der Aktie
+	fhem("attr $deviceName reading01Name Name");
+	fhem("attr $deviceName reading01Regex <h1 class=.font-resize.>([\\w\\W]{2,50}).Aktie");
+	
+	
+	#Regex für den Kurs der Aktie
+	fhem("attr $deviceName reading02Name Price");
+	fhem("attr $deviceName reading02Regex class=.col-xs-5 col-sm-4 text-sm-right text-nowrap.>([\\d\\W].{1,15})<span>EUR");
+	
+	
+	#Regex für die relative Veränderung
+	fhem("attr $deviceName reading03Name RelativeChange");
+	fhem("attr $deviceName reading03Regex EUR.{1,18}<div class=.col-xs-3.col-sm-3.text-right.text-nowrap[\\w\\W]{0,50}.>(.\\d*\\S\\d*)<span>%");
+	
+	
+	fhem("attr $deviceName stateFormat Name: Price €");
+	
+	#Regex für die absolute Veränderung
+	fhem("attr $deviceName reading04Name AbsolutChange");
+	fhem("attr $deviceName reading04Regex class=.col-xs-4.col-sm-3.text-sm-right.text-nowrap.text-center[\\w\\W]{0,50}.>(.\\d*\\S\\d*).{1,20}EUR");
+	
+	
+	#Funktionsaufruf für das Speichern des ersten Aktienkurses als Attribut
+	getFirstPrice($deviceName);
+	return undef;
+	
+	}
+
+#Ermittelt den initialen Preis beim Hinzufügen der Aktie
 sub getFirstPrice($){
 	my ($deviceName) = @_;
 	
@@ -115,38 +98,39 @@ sub getFirstPrice($){
 
 }
 
-sub TestContacts(){
+#Ermittelt die Kontakte, welche benachrichtigt werden
+sub ExtractContacts($$){
+	my ($deviceName, $message) = @_;
 
+	my $contactsAttr = AttrVal($deviceName, "Contacts","NotFound");
+	my @contacts = split(/,/, $contactsAttr);
+	#my $string = fhem("set telebot msg \@\@"."@contacts[$i] $message");
 
-my @contactarray = contacts();
-my $length = @contactarray;
-my @result;
+	my @result;
+	my $string;
 
-for(my $i = 0;$i < $length;$i ++) {
-push @result, "\@\@"."@contactarray[$i]";
-
-fhem ("set telebot msg Test");
+	for (my $i=0; $i< @contacts; $i++) {
+	push @result, fhem("set telebot msg \@@contacts[$i] $message\n");
 
 }
 
 return "@result";
-
-#foreach (@contactarray){
-
-#return "@contactarray\n";
 }
 
 
-
+#Ermittelt die Aktien, welche in FHEM angelegt sind
 sub getStocks(){
 	my (@stocks) = defInfo('TYPE=HTTPMOD:FILTER=room=Aktien', 'NAME'); 
 	my $json_str = encode_json(\@stocks);
 	return $json_str;
 }
 
+#Erstellt ein FileLog pro Aktiengerät und füllt es mit den jeweiligen Kursdaten
 sub create_Logfile($$$$){
 	 my ($filename, $loglevel, $text, $deviceName) = @_;
-
+	 
+	 
+	#Werte in das FileLog schreiben
     return if ($loglevel > AttrVal('global', 'verbose', 3));
 
     my ($seconds, $microseconds) = gettimeofday();
@@ -174,6 +158,7 @@ sub create_Logfile($$$$){
 	
 }
 
+#Löscht das Aktiengrät
 sub deleteStock($){
 	my ($deviceName) = @_;
 	fhem("delete $deviceName");
@@ -183,100 +168,24 @@ sub deleteStock($){
 	return undef;
 }
 
-sub sendNotificationDefine($$$){
-	my ($deviceName, $changeTime, $changePercent) = @_;
+ 
+#legt die Attribute für die Werteveränderung, das Zeitintervall und die jeweiligen Kontakte an
+sub sendNotificationDefine($$$$){
+	my ($deviceName, $changeTime, $changePercent, $contacts) = @_;
 	
 	addToDevAttrList($deviceName, "ChangeTime");
 	addToDevAttrList($deviceName, "ChangePercent");
+	addToDevAttrList($deviceName, "Contacts");
 	
 	fhem("attr $deviceName ChangeTime $changeTime");
 	fhem("attr $deviceName ChangePercent $changePercent");
+	fhem("attr $deviceName Contacts $contacts");
 	
 	return sendNotification($deviceName);
 
-}
+}	
 
-sub GetFirstLog($) {
- 	my ($deviceName) = @_;
- 
-	
-	my $timestamp = OldTimestamp("$deviceName");
-	my $ts_seconds = time_str2num($timestamp);
-	my $last_price;
-	
-	#hier oldtimestamp Funktion verwenden anstelle von localtime
-	my $input = 24;
-	my $time_input = ($input * 60 * 60) - (10*60);
-	my $time1 = POSIX::strftime("%Y-%m-%d_%H:%M:%S",localtime($ts_seconds-($input*60*60)));
-	my $time2 = POSIX::strftime("%Y-%m-%d_%H:%M:%S",localtime($ts_seconds-$time_input));
-	 
-	 my $result = fhem("get FileLog_$deviceName - - $time1 $time2");
-	 
-     my $regex = qr/20.{0,50}.[PriceKurs].([\d\W].{1,15})/mp;
-	 
-	 my $first_price = AttrVal($deviceName, "FirstPrice","NotFound");
-	 
-	 
-
-		if ( $result =~ /$regex/ ) {
-		
-		$last_price = $1;
-		}
-		
-		if ("$last_price" eq "") {
-		
-		return $last_price=$first_price;
-		}
-		
-	
-		else {	
-		return $last_price;
-		}
-		}
-		
-		
-	 
-	# my @resultarray = $first_price;
-	 
-	 #if ("@resultarray" eq ""){
-	 ##
-	 #return "IsEmpty";
-	 #}
-	 #else {
-	 
-	 
-	# }
-	 
-	# return @resultarray;
-	
- 
-
-sub TestPrice($){
-
-	my ($deviceName) = @_;
-	my $current_price = ReadingsVal("$deviceName", "Price", "NotFound");
-	my $last_price ="2.699,00";
-	
-	my $replacement = qr/\./p;
-    my $subst = ''; 
-	$current_price = $current_price =~ s/$replacement/$subst/r;
-	
-	$replacement = qr/\./p;
-    $subst = ''; 
-	$last_price = $last_price =~ s/$replacement/$subst/r;
-	#$current_price =~ tr/.//;
-	
-	
-	
-	
-	$last_price =~ tr/,/./;
-	
-	return $current_price;
-
-}
-
-
-
+# Enthält die Logik für das Versenden einer Nachricht
 sub sendNotification($){
 
 	my ($deviceName) = @_;
@@ -305,6 +214,7 @@ sub sendNotification($){
 	 
 	 my $result = fhem("get FileLog_$deviceName - - $time1 $time2");
 	 
+	 #Aktienkurs durch ein Regex extrahieren
      my $regex = qr/20.{0,50}.[PriceKurs].([\d\W].{1,15})/mp;
 	 
 	 
@@ -314,15 +224,11 @@ sub sendNotification($){
 		$last_price = $1;
 		}
 		
+		
 	#Fall behandeln, falls noch keine Logeinträge vorhanden sind
-	
-	print "Das ist $last_price";
-	
 	 
 	 if ("$last_price" eq "0") {
 	 
-		#print"Ich bin in das if gegangen";
-		#$first_price = "90,66";
 		$search_last_price = 0;
 		$last_price = $first_price;
 		}
@@ -331,7 +237,7 @@ sub sendNotification($){
 	my $current_price = ReadingsVal("$deviceName", "Price", "NotFound");
 	
 	
-	#Fall bei 4Stelligen Akteinkursen
+	# Punkte bei 4Stelligen Akteinkursen entfernen
 	my $replacement = qr/\./p;
     my $subst = ''; 
 	$current_price = $current_price =~ s/$replacement/$subst/r;
@@ -340,7 +246,7 @@ sub sendNotification($){
     $subst = ''; 
 	$last_price = $last_price =~ s/$replacement/$subst/r;
 	
-	#Default Fall
+	#Komma in Punkte umwandeln, damit die Rechnung programmseitig durchgeführt werden kann
 	$current_price =~ tr/,/./;
 	$last_price =~ tr/,/./;
 	my $rounded;
@@ -360,26 +266,35 @@ sub sendNotification($){
 		
 		if ($rounded >= $change_relative) {
 			
-			#$message = "Angela";
-			fhem("set telebot msg \@Angela Kurs für $stock_name ist in den letzten $input h um $print gestiegen");
-			#fhem("set telebot msg \@#SmartWifi_FHEM Kurs für $stock_name ist in den letzten $input h um $print gestiegen");
-			print "Nachricht für Kurs gestiegen";
+			if ($search_last_price == 0) {
+			
+			ExtractContacts($deviceName, "Es fehlen Referenzdaten zum angegebenen Zeitintervall. 
+										  Daher dient der Startpreis der $stock_name in Höhe von $first_price€ als Vergleichswert\n 
+										  Der Kurs für $stock_name ist zum Startpreis um $print gestiegen");
+			}
+			
+			else {
+			
+			ExtractContacts($deviceName, "Der Kurs für $stock_name ist in den letzten $input h um $print auf $current_price€ gestiegen");
+	
+			}
 		}
 		
 		elsif ($rounded < 0 and $rounded <= ($change_relative)*(-1)){
-			
-			#$message = "@@Angela";
-			fhem("set telebot msg \@Angela Kurs für $stock_name ist in den letzten $input h um $print gefallen");
-			#fhem("set telebot msg \@#SmartWifi_FHEM Kurs für $stock_name ist in den letzten $input h um $print gefallen");
-			print "Nachricht für: Kurs gefallen";
-		}
 		
-		
-	else {
+			if ($search_last_price == 0) {
 			
-	 print "Du solltest keine Nachricht bekommen";
-	 fhem("set telebot msg \@Angela Keine Nachricht bekommen");
-	 
+			ExtractContacts($deviceName, "Es fehlen Referenzdaten zum angegebenen Zeitintervall. 
+										  Daher dient der Startpreis der $stock_name in Höhe von $first_price€ als Vergleichswert\n 
+										  Der Kurs für $stock_name ist zum Startpreis um $print gefallen");
+											
+					}
+			
+			else {
+			
+			ExtractContacts($deviceName, "Der Kurs für $stock_name ist in den letzten $input h um $print auf $current_price€ gefallen");
+	
+			}
 		}
 	
 	#Timer für Wiederaufruf der Funktion
@@ -398,84 +313,21 @@ sub sendNotification($){
 	
 }
 
-
-sub contacts(){
-
-	my $contacts = ReadingsVal("telebot", "Contacts", "No Contact Found");
-
-
-	my $regex = qr/@(\w*)/mp;
-	my @matches = ($contacts =~ /$regex/g);
-
-		
-	return @matches;
-
-
-}
-
-sub addAtDevice($$$){
-	my($deviceName, $hours, $percentage) = @_;
-	my $borderTime = time();
-	my $name = "at_" . "$deviceName" . "_" . "$hours" . "_" . "$percentage";
+#löscht die Attribute
+sub deleteNotify($){
+	my ($deviceName) = @_;
 	
-	fhem("define $name at +*02:00:00 {sendNotificationFunction(\"$deviceName\", \"$hours\", \"$percentage\", \"$borderTime\")}");
-	fhem("attr $name room Aktien");
+	fhem("deleteattr $deviceName ChangePercent");
+	fhem("deleteattr $deviceName ChangeTime");
+	fhem("deleteattr $deviceName Contacts");
 	
 	return undef;
 }
 
-sub sendNotificationFunction($$$$){
-	my ($deviceName, $hours, $percentage, $borderTime) = @_;
-	my ($currentTime);
-	my ($targetTime);
-	my ($before);
-	my (@valString);
-	my ($val);
-	my ($minChange);
-	my ($maxChange);
-	
-	$before = time() - ($hours*60*60);
-	$currentTime = strftime( '%Y-%m-%d_%H:%M:%S', localtime);
-	
-	if($before > $borderTime){
-		$targetTime = strftime( '%Y-%m-%d_%H:%M:%S', localtime($before));
-	} else {
-		$targetTime = strftime( '%Y-%m-%d_%H:%M:%S', localtime($borderTime));
-	}
-	
-	
-	my $logs = fhem("get FileLog_$deviceName - - $targetTime $currentTime");
-	my @logsString = split "\n", $logs;
-	my $length = @logsString;
-	
-	my @lastValString = split(/ /,@logsString[$length - 1]);
-	my $lastVal = @lastValString[3];
-	$lastVal =~ tr/,/./;
-	
-	
-	
-	for(my $i = 0; $i < $length - 1; $i++){
-		@valString = split(/ /,@logsString[$i]);
-		$val = @valString[3];
-		$val =~ tr/,/./;
-		
-		$minChange = $val * (1 - $percentage / 100);
-		$maxChange = $val * (1 + $percentage / 100);
-		
-		if($lastVal <= $minChange || $lastVal >= $maxChange ){
-			return "Klappt";
-		}
-	}
-	
-	return "Klappt auch";
-}
-
+#Ermittelt alle Logeinträge der jeweiligen Aktie
 sub getLogs($$){
 	my ($deviceName, $datetime) = @_;
 	my $logs = fhem("get FileLog_$deviceName - - $datetime 2030-10-01_16:00:00");
 	return $logs;
 }
-#Fn-call addDevice(WKN)
-#Fn-call FinanzenNetHttpMod(WKN)
-#FN-call updateDevidce();
 1;
