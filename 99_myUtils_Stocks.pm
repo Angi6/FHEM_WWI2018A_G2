@@ -169,7 +169,7 @@ sub deleteStock($){
 }
 
  
-#legt die Attribute für die Werteveränderung, das Zeitintervall und die jeweiligen Kontakte an
+#Legt die Attribute für die Werteveränderung, das Zeitintervall und die jeweiligen Kontakte an
 sub sendNotificationDefine($$$$){
 	my ($deviceName, $changeTime, $changePercent, $contacts) = @_;
 	
@@ -268,14 +268,23 @@ sub sendNotification($){
 			
 			if ($search_last_price == 0) {
 			
-			ExtractContacts($deviceName, "Es fehlen Referenzdaten zum angegebenen Zeitintervall. 
-										  Daher dient der Startpreis der $stock_name in Höhe von $first_price€ als Vergleichswert\n 
-										  Der Kurs für $stock_name ist zum Startpreis um $print gestiegen");
+			ExtractContacts($deviceName, "Werteveränderung für die $stock_name Aktie ($deviceName):\n
+			Es fehlen Referenzdaten zum angegebenen Zeitintervall, daher dient der Startpreis als Vergleichswert.\n
+			Ausgewähltes Zeitintervall: $input Stunden\n
+			Aktueller Kurs: $current_price€\n
+			Vorheriger Kurs: $last_price€\n
+			Werteveränderung: $print gestiegen");
 			}
 			
 			else {
 			
-			ExtractContacts($deviceName, "Der Kurs für $stock_name ist in den letzten $input h um $print auf $current_price€ gestiegen");
+			ExtractContacts($deviceName, "Werteveränderung für die $stock_name Aktie ($deviceName):\n
+			Ausgewähltes Zeitintervall: $input Stunden\n
+			Aktueller Kurs: $current_price€\n
+			Vorheriger Kurs: $last_price€\n
+			Werteveränderung: $print gestiegen");
+			
+			#ExtractContacts($deviceName, "Der Kurs für $stock_name ist in den letzten $input h um $print auf $current_price€ gestiegen.");
 	
 			}
 		}
@@ -284,15 +293,24 @@ sub sendNotification($){
 		
 			if ($search_last_price == 0) {
 			
-			ExtractContacts($deviceName, "Es fehlen Referenzdaten zum angegebenen Zeitintervall. 
-										  Daher dient der Startpreis der $stock_name in Höhe von $first_price€ als Vergleichswert\n 
-										  Der Kurs für $stock_name ist zum Startpreis um $print gefallen");
+			ExtractContacts($deviceName, "Werteveränderung für die $stock_name Aktie ($deviceName):\n
+			Es fehlen Referenzdaten zum angegebenen Zeitintervall, daher dient der Startpreis als Vergleichswert.\n
+			Ausgewähltes Zeitintervall: $input Stunden\n
+			Aktueller Kurs: $current_price€\n
+			Vorheriger Kurs: $last_price€\n
+			Werteveränderung: $print gefallen");
 											
 					}
 			
 			else {
 			
-			ExtractContacts($deviceName, "Der Kurs für $stock_name ist in den letzten $input h um $print auf $current_price€ gefallen");
+			ExtractContacts($deviceName, "Werteveränderung für die $stock_name Aktie ($deviceName):\n
+			Ausgewähltes Zeitintervall: $input Stunden\n
+			Aktueller Kurs: $current_price€\n
+			Vorheriger Kurs: $last_price€\n
+			Werteveränderung: $print gefallen");
+			
+			#ExtractContacts($deviceName, "Der Kurs für $stock_name ist in den letzten $input h um $print auf $current_price€ gefallen.");
 	
 			}
 		}
