@@ -1,0 +1,165 @@
+/*
+ * Style for body elements
+ * Disable Scrollbar
+*/
+body {
+    overflow: hidden;
+}
+
+
+/*
+ * Style for table elements
+ * Table cells are displayed with a common border
+ * Set width to 95% of parent element
+ * Set left margin to 2% of parent element
+*/
+table{
+    border-collapse: collapse;
+    width: 95%;
+    margin-left: 2%;
+}
+
+
+/*
+ * Style for th elements inside Element with id = notifyHead
+ * Set width to 20% of parent element
+*/
+#notifyHead th{
+    width: 20%;
+}
+
+
+/*
+ * Style for th elements inside Element with id = stockHead
+ * Set width to 20% of parent element
+*/
+#stockHead th{
+    width: 20%;
+}
+
+
+/*
+ * Style for td elements inside tr Elements inside tbody elements inside element with id = stockTable
+ * Set width to 20% of parent element
+ * Set solid border
+ * Set border width to 1 pixel
+ * Set border Color white
+*/
+#stockTable tbody tr td{
+    width: 20%;
+    border: solid;
+    border-width: 1px 0;
+    border-color: #FFFFFF;
+}
+
+
+/*
+ * Style for td elements inside tr Elements inside tbody elements inside element with id = notifyTable
+ * Set width to 20% of parent element
+ * Set solid border
+ * Set border width to 1 pixel
+ * Set border Color white
+*/
+#notifyTable tbody tr td{
+    width: 20%;
+    border: solid;
+    border-width: 1px 0;
+    border-color: #FFFFFF;
+}
+
+
+/*
+ * Style for elements with class = tableBody
+ * Add scrollbar to element if entire element does not fit inside screen
+*/
+.tableBody{
+    overflow: auto;
+}
+
+
+/*
+ * Style for element with id = bodyStocks
+ * Set height to 40 vh
+*/
+#bodyStocks{
+    height: 40vh;
+}
+
+
+/*
+ * Style for element with id = bodyNotify
+ * Set height to 26 vh
+*/
+#bodyNotify{
+    height: 26vh;
+}
+
+
+/*
+ * Style for element with id = selectOptionChange
+ * Disable border
+ * Set width to 102% of parent element
+*/
+#selectOptionChange {
+    border: none;
+    width: 102%;
+}
+
+
+#stockChart {
+    width: inherit;
+    height: inherit;
+}
+
+#selectOptionNotifyWKN {
+    width: 30%;
+    margin-top: 15px;
+}
+
+#selectOptionNotifyContacts {
+    width: 30%;
+    margin-top: 15px;
+}
+
+.notify{
+    padding-left: 0.1%;
+}
+
+#sheetPerformance{
+    width: inherit;
+    height: inherit;
+}
+
+.buttonCell{
+    text-align-all: center;
+    color:#FF9F00;
+    height: 50px;
+    background-color: inherit;
+    border: none;
+}
+.buttonCell:hover{
+    color:white;
+    cursor: pointer;
+}
+
+#addStockButton{
+    margin-left: 5%;
+    margin-top: 20px;
+}
+
+#addNotifyButton{
+    margin-left: 1%;
+    margin-top: 20px;
+}
+
+select {
+    -webkit-appearance: listbox;
+}
+
+#selectOptionChange{
+    width: 100px;
+}
+
+[contentEditable=true]:not(:focus):before{
+    content:attr(data-text)
+}

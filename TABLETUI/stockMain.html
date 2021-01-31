@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--
+     /* FHEM tablet ui */
+     * UI builder framework for FHEM
+     *
+     * Version: 2.5.*
+     * URL: https://github.com/knowthelist/fhem-tablet-ui
+     *
+     * Copyright (c) 2015-2017 Mario Stephan <mstephan@shared-files.de>
+     * Under MIT License (http://www.opensource.org/licenses/mit-license.php)
+
+    -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="css/stockStyle.css">
+
+    <!--Reload der Seite alle 10 Minuten, damit Daten aktuell bleiben-->
+    <meta http-equiv="refresh" content="600" />
+
+    <!--Festlegung des Grids auf 8 Spalten und 5 Reihen-->
+    <meta name="gridster_cols" content="8">
+    <meta name="gridster_rows" content="5">
+
+    <!--Setzt den Seitentitel auf FHEM-Tablet-UI-->
+    <title>FHEM-Tablet-UI</title>
+</head>
+
+<body>
+<div class="gridster" id="stockGrid">
+    <ul>
+        <li data-row="1" data-col="1" data-sizex="1" data-sizey="5" data-template="/fhem/ftui/navigation.html"></li>
+
+        <li data-row="1" data-col="2" data-sizey="3" data-sizex="4">
+            <header>Aktienverlauf</header>
+            <div class="sheet" id="sheetPerformance">
+                <div class="row" >
+                    <div class="hbox">
+                        <select name="selectPerformance" id="selectOptionPerformance">
+                        </select>
+                        <select name="selectTimes" id="selectOptionTimes">
+                            <option value="1">Letzten 24h anzeigen</option>
+                            <option value="2">Letzten 7 Tage anzeigen</option>
+                            <option value="3">Alles anzeigen</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" id="canvasDiv">
+                    <canvas id="stockChart"></canvas>
+                </div>
+            </div>
+        </li>
+
+        <li data-row="1" data-col="6" data-sizey="3" data-sizex="3">
+            <header>Aktienuebersicht</header>
+            <div class="sheet">
+                <div class="row">
+                    <div class="hbox">
+                        <div data-type="input"
+                             contentEditable=true
+                             data-text="WKN eingeben"
+                             id="sendWKN"
+                             class="notransmit"
+                        aria-placeholder="WKN"></div>
+                        <button
+                             class="round link buttonCell"
+                             id="addStockButton">Aktie hinzufügen
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="header">
+                        <table>
+                            <tr id="stockHead">
+                                <th>Aktie</th>
+                                <th>WKN</th>
+                                <th>Wert</th>
+                                <th>
+                                    <select name="selectChange" id="selectOptionChange">
+                                        <option value="1">Aenderung %</option>
+                                        <option value="2">Aenderung €</option>
+                                    </select>
+                                </th>
+                                <th></th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tableBody" id="bodyStocks">
+                        <table id="stockTable">
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li data-row="4" data-col="2" data-sizey="2" data-sizex="7">
+            <header>Benachrichtigungen</header>
+            <div class="sheet">
+                <div class="row">
+                    <div class="hbox">
+                        <select name="selectNotifyContacts"
+                                id="selectOptionNotifyContacts"
+                                size="1" multiple></select>
+                        <select name="selectNotifyWKN" id="selectOptionNotifyWKN">
+                        </select>
+                        <div data-type="input"
+                             data-value="24"
+                             contentEditable=true
+                             data-text="Zeiteingabe [h]"
+                             id="sendTime"
+                             class="notransmit notify"></div>
+                        <div data-type="input"
+                             data-value="5"
+                             contentEditable=true
+                             data-text="Prozenteingabe"
+                             id="sendPercentage"
+                             class="notransmit notify"></div>
+                        <button id="addNotifyButton"
+                        class="buttonCell notify">
+                            Benachrichtigung hinzufuegen
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="header">
+                        <table>
+                            <tr id="notifyHead">
+                                <th>Accounts</th>
+                                <th>Aktie</th>
+                                <th>Zeit [h]</th>
+                                <th>Prozent</th>
+                                <th></th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tableBody" id="bodyNotify">
+                        <table id="notifyTable">
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="js/fhem-tablet-ui.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+<script src="js/JSStock.js"></script>
+</body>
+
+</html>

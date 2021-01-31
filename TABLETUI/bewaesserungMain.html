@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--
+     /* FHEM tablet ui */
+     /*
+     * UI builder framework for FHEM
+     *
+     * Version: 2.5.*
+     * URL: https://github.com/knowthelist/fhem-tablet-ui
+     *
+     * Copyright (c) 2015-2017 Mario Stephan <mstephan@shared-files.de>
+     * Under MIT License (http://www.opensource.org/licenses/mit-license.php)
+     *
+     * - create a new folder named 'tablet' in /<fhem-path>/www
+     * - copy all files incl. sub folders into /<fhem-path>/www/tablet
+     * - add 'define TABLETUI HTTPSRV ftui ./www/tablet Tablet' in fhem.cfg
+     * - Tadaaa! A new fhem ui in http://<fhem-url>:8083/fhem/tablet/
+     */
+    -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+
+    <!-- define your personal style here, it wont be overwritten  -->
+    <!-- link rel="stylesheet" href="css/fhem-green-ui.css" / -->
+    <!-- link rel="stylesheet" href="css/fhem-tablet-ui-user.css" / -->
+    <script src="js/fhem-tablet-ui.js" defer></script>
+
+    <!-- Remove this line to enable for usage with WebViewControl
+    <script defer>var wvcDevices = {'12345': 'Tablet'}; var wvcUserCssFile="webviewcontrol.css"</script>
+    <script src="../pgm2/cordova-2.3.0.js" defer></script>
+    <script src="../pgm2/webviewcontrol.js" defer></script>
+    End for WebViewControl -->
+    <meta name="gridster_cols" content="8">
+    <meta name="gridster_rows" content="5">
+
+    <title>FHEM-Tablet-UI</title>
+</head>
+
+<body>
+<div class="gridster">
+    <ul>
+
+        <li data-row="1" data-col="1" data-sizex="1" data-sizey="5" data-template="/fhem/ftui/navigation.html"></li>
+
+        <li data-row="1" data-col="2" data-sizex="3" data-sizey="3">
+            <header>GARTEN - MANUELLER BETRIEB</header>
+            <div class="sheet">
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">Bewässerung An-/Ausschalten</div>
+                        <div data-type="switch"
+                             data-device="myShelly"
+                             data-cmd="set myShelly toggle 0"
+                             data-get="relay_0"
+                             class=""
+                             data-icon="fa-tint"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">Bewässerung starten für</div>
+                        <div data-type="input"
+                             data-device="manuellBew_garten"
+                             data-get="duration_0"
+                             data-set="duration_0"
+                             data-cmd="setreading"
+                             class="w1x"></div>
+                        <div class="inline large thin cell">Minuten</div>
+                        <div data-type="switch"
+                             data-device="manuellBew_garten"
+                             data-get="start_button"
+                             data-set="start_button"
+                             data-cmd="setreading"
+                             class=""
+                             data-icon="fa-hourglass-half"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">Bewässerung starten</div>
+                        <div data-type="switch"
+                             data-device="halbautomatikBew_garten"
+                             data-get="start_button"
+                             data-set="start_button"
+                             data-cmd="setreading"
+                             class=""
+                             data-icon="fa-clock"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">um</div>
+                        <div data-type="datetimepicker"
+                             data-device="halbautomatikBew_garten"
+                             data-get="start_time_0"
+                             data-set="start_time_0"
+                             data-cmd="setreading"
+                             data-format="H:i"
+                             data-step="5"
+                             data-datepicker="false"
+                             class="inline large thin cell"></div>
+                        <div class="inline large thin cell">Uhr</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">für</div>
+                        <div data-type="input"
+                             data-device="halbautomatikBew_garten"
+                             data-get="duration_0"
+                             data-set="duration_0"
+                             data-cmd="setreading"
+                             class="w1x"></div>
+                        <div class="inline large thin cell">Minuten</div>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li data-row="4" data-col="2" data-sizex="3" data-sizey="2">
+            <header>GARTEN - AUTOMATIKBETRIEB</header>
+            <div class="sheet">
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">Automatikbetrieb aktivieren</div>
+                        <div data-type="switch"
+                             data-device="automatikBew_garten"
+                             data-get="start_button"
+                             data-set="start_button"
+                             data-cmd="setreading"
+                             class=""
+                             data-icon="fa-power-off"></div>
+                        <div class="inline large thin cell">Settings:</div>
+                        <div data-type="popup" data-height="450px" data-width="670px">
+                            <div data-type="link" class="" data-icon="fa-cog"></div>
+                            <div class="dialog">
+                                <header>KONFIGURATION - GARTEN - AUTOMATIKBETRIEB</header>
+                                <div class="inline large bold darker cell">Regenmenge: </div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">In den letzten</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_garten"
+                                             data-get="rain_interval_0_0"
+                                             data-set="rain_interval_0_0"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">Stunden in Summe maximal</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_garten"
+                                             data-get="rain_amount_0_0"
+                                             data-set="rain_amount_0_0"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">mm/qm</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">In den letzten</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_garten"
+                                             data-get="rain_interval_0_1"
+                                             data-set="rain_interval_0_1"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">Stunden in Summe maximal</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_garten"
+                                             data-get="rain_amount_0_1"
+                                             data-set="rain_amount_0_1"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">mm/qm</div>
+                                    </div>
+                                </div>
+                                <div class="inline large bold darker cell">Außentemperatur:</div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">In den letzten</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_garten"
+                                             data-get="temp_interval_0"
+                                             data-set="temp_interval_0"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell"> Stunden durchschnittlich mindestens</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_garten"
+                                             data-get="temp_avg_0"
+                                             data-set="temp_avg_0"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">Grad</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">Aktuell mindestens</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_garten"
+                                             data-get="temp_cur_0_0"
+                                             data-set="temp_cur_0_0"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">Grad</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">Aktuell maximal</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_garten"
+                                             data-get="temp_cur_0_1"
+                                             data-set="temp_cur_0_1"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">Grad</div>
+                                    </div>
+                                </div>
+                                <div class="inline large bold darker cell">Wind:</div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">Windgeschwindigkeit maximal</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_garten"
+                                             data-get="wind_standard_0"
+                                             data-set="wind_standard_0"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">m/s</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">Wind-Böe - Geschwindigkeit maximal</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_garten"
+                                             data-get="wind_gust_0"
+                                             data-set="wind_gust_0"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">m/s</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">Bewässerungsstart jeden</div>
+                        <div data-type="select"
+                             data-items='["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"]'
+                             data-device="automatikBew_garten"
+                             data-get="day_0_0"
+                             data-set="day_0_0"
+                             data-cmd="setreading"
+                             class="w2x"></div>
+                        <div class="inline large thin cell">und</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">jeden</div>
+                        <div data-type="select"
+                             data-items='["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"]'
+                             data-device="automatikBew_garten"
+                             data-get="day_0_1"
+                             data-set="day_0_1"
+                             data-cmd="setreading"
+                             class="w2x"></div>
+                        <div class="inline large thin cell">um</div>
+                        <div data-type="datetimepicker"
+                             data-device="automatikBew_garten"
+                             data-get="start_time"
+                             data-set="start_time"
+                             data-cmd="setreading"
+                             data-format="H:i"
+                             data-step="5"
+                             data-datepicker="false"
+                             class="inline large thin cell"></div>
+                        <div class="inline large thin cell">Uhr</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">für</div>
+                        <div data-type="input"
+                             data-device="automatikBew_garten"
+                             data-get="duration_0"
+                             data-set="duration_0"
+                             data-cmd="setreading"
+                             class="w1x"></div>
+                        <div class="inline large thin cell">Minuten</div>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li data-row="1" data-col="5" data-sizex="3" data-sizey="3">
+            <header>WIESE - MANUELLER BETRIEB</header>
+            <div class="sheet">
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">Bewässerung An-/Ausschalten</div>
+                        <div data-type="switch"
+                             data-device="myShelly"
+                             data-cmd="set myShelly toggle 1"
+                             data-get="relay_1"
+                             class=""
+                             data-icon="fa-tint"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">Bewässerung starten für</div>
+                        <div data-type="input"
+                             data-device="manuellBew_wiese"
+                             data-get="duration_1"
+                             data-set="duration_1"
+                             data-cmd="setreading"
+                             class="w1x"></div>
+                        <div class="inline large thin cell">Minuten</div>
+                        <div data-type="switch"
+                             data-device="manuellBew_wiese"
+                             data-get="start_button"
+                             data-set="start_button"
+                             data-cmd="setreading"
+                             class=""
+                             data-icon="fa-hourglass-half"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">Bewässerung starten</div>
+                        <div data-type="switch"
+                             data-device="halbautomatikBew_wiese"
+                             data-get="start_button"
+                             data-set="start_button"
+                             data-cmd="setreading"
+                             class=""
+                             data-icon="fa-clock"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">um</div>
+                        <div data-type="datetimepicker"
+                             data-device="halbautomatikBew_wiese"
+                             data-get="start_time_1"
+                             data-set="start_time_1"
+                             data-cmd="setreading"
+                             data-format="H:i"
+                             data-step="5"
+                             data-datepicker="false"
+                             class="inline large thin cell"></div>
+                        <div class="inline large thin cell">Uhr</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">für</div>
+                        <div data-type="input"
+                             data-device="halbautomatikBew_wiese"
+                             data-get="duration_1"
+                             data-set="duration_1"
+                             data-cmd="setreading"
+                             class="w1x"></div>
+                        <div class="inline large thin cell">Minuten</div>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li data-row="4" data-col="5" data-sizey="2" data-sizex="3">
+            <header>WIESE - AUTOMATIKBETRIEB</header>
+            <div class="sheet">
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">Automatikbetrieb aktivieren</div>
+                        <div data-type="switch"
+                             data-device="automatikBew_wiese"
+                             data-get="start_button"
+                             data-set="start_button"
+                             data-cmd="setreading"
+                             class=""
+                             data-icon="fa-power-off"></div>
+                        <div class="inline large thin cell">Settings:</div>
+                        <div data-type="popup" data-height="450px" data-width="670px">
+                            <div data-type="link" class="" data-icon="fa-cog"></div>
+                            <div class="dialog">
+                                <header>KONFIGURATION - GARTEN - AUTOMATIKBETRIEB</header>
+                                <div class="inline large bold darker cell">Regenmenge: </div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">In den letzten</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_wiese"
+                                             data-get="rain_interval_1_0"
+                                             data-set="rain_interval_1_0"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">Stunden in Summe maximal</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_wiese"
+                                             data-get="rain_amount_1_0"
+                                             data-set="rain_amount_1_0"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">mm/qm</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">In den letzten</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_wiese"
+                                             data-get="rain_interval_1_1"
+                                             data-set="rain_interval_1_1"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">Stunden in Summe maximal</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_wiese"
+                                             data-get="rain_amount_1_1"
+                                             data-set="rain_amount_1_1"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">mm/qm</div>
+                                    </div>
+                                </div>
+                                <div class="inline large bold darker cell">Außentemperatur:</div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">In den letzten</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_wiese"
+                                             data-get="temp_interval_1"
+                                             data-set="temp_interval_1"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell"> Stunden durchschnittlich mindestens</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_wiese"
+                                             data-get="temp_avg_1"
+                                             data-set="temp_avg_1"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">Grad</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">Aktuell mindestens</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_wiese"
+                                             data-get="temp_cur_1_0"
+                                             data-set="temp_cur_1_0"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">Grad</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">Aktuell maximal</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_wiese"
+                                             data-get="temp_cur_1_1"
+                                             data-set="temp_cur_1_1"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">Grad</div>
+                                    </div>
+                                </div>
+                                <div class="inline large bold darker cell">Wind:</div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">Windgeschwindigkeit maximal</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_wiese"
+                                             data-get="wind_standard_1"
+                                             data-set="wind_standard_1"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">m/s</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="hbox">
+                                        <div class="inline large thin cell">Wind-Böe - Geschwindigkeit maximal</div>
+                                        <div data-type="input"
+                                             data-device="automatikBew_wiese"
+                                             data-get="wind_gust_1"
+                                             data-set="wind_gust_1"
+                                             data-cmd="setreading"
+                                             class="w1x"></div>
+                                        <div class="inline large thin cell">m/s</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">Bewässerungsstart jeden</div>
+                        <div data-type="select"
+                             data-items='["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"]'
+                             data-device="automatikBew_wiese"
+                             data-get="day_1_0"
+                             data-set="day_1_0"
+                             data-cmd="setreading"
+                             class="w2x"></div>
+                        <div class="inline large thin cell">und</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">jeden</div>
+                        <div data-type="select"
+                             data-items='["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"]'
+                             data-device="automatikBew_wiese"
+                             data-get="day_1_1"
+                             data-set="day_1_1"
+                             data-cmd="setreading"
+                             class="w2x"></div>
+                        <div class="inline large thin cell">um</div>
+                        <div data-type="datetimepicker"
+                             data-device="automatikBew_wiese"
+                             data-get="start_time"
+                             data-set="start_time"
+                             data-cmd="setreading"
+                             data-format="H:i"
+                             data-step="5"
+                             data-datepicker="false"
+                             class="inline large thin cell"></div>
+                        <div class="inline large thin cell">Uhr</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hbox">
+                        <div class="inline large thin cell">für</div>
+                        <div data-type="input"
+                             data-device="automatikBew_wiese"
+                             data-get="duration_1"
+                             data-set="duration_1"
+                             data-cmd="setreading"
+                             class="w1x"></div>
+                        <div class="inline large thin cell">Minuten</div>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        <li data-row="1" data-col="8" data-sizey="2" data-sizex="1">
+            <header>ZISTERNE - FÜLLMENGE</header>
+            <div class="sheet">
+                <div class="row">
+                    <div class="hbox">
+                        <div data-type="label"
+                             data-device="Zisterne"
+                             data-get="volume"
+                             class="inline large thin cell"></div>
+                        <div class="inline large thin cell">Liter</div>
+                    </div>
+                </div>
+                <div data-type="progress"
+                     data-device="Zisterne"
+                     data-get="volume"
+                     data-min="0"
+                     data-max="5645"
+                     data-unit="%"
+                     data-on-color="#0070aa"
+                     class="percent large"></div>
+            </div>
+        </li>
+
+        <li data-row="3" data-col="8" data-sizey="3" data-sizex="1">
+            <header>FÜLLSTAND</header>
+            <div class="sheet">
+                <div class="row">
+                    <div data-type="scale"
+                         data-device="Zisterne"
+                         data-get="waterlvl"
+                         data-min="0"
+                         data-max="171"
+                         data-orientation="vertical"
+                         data-tick="2"
+                         data-value-interval="50"
+                         data-limits='[0,57,114]'
+                         data-colors='["red","orange","green"]'
+                         class=""></div>
+                    <div data-type="label"
+                         data-device="Zisterne"
+                         data-get="waterlvl"
+                         class="inline large thin cell"></div>
+                    <div class="inline large thin cell">cm</div>
+                </div>
+            </div>
+        </li>
+
+    </ul>
+</div>
+
+</body>
+
+</html>
