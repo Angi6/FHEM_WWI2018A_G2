@@ -1,0 +1,80 @@
+/* Definition for styles to be used for extension of slider widget for display of blinds, awnings etc. */
+/* normal lines */
+
+
+.darker.showdeco > .vertical .range-bar .range-min,
+.darker.showdeco > .vertical .range-bar .range-max {
+    visibility: visible;
+    margin-left: -12px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    width: 200% !important;
+    text-align: end;
+    color: #8c8c8c;
+}
+
+.showdeco > .vertical .range-bar .range-min,
+.showdeco > .vertical .range-bar .range-max {
+    visibility: visible;
+    margin-left: -12px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    width: 200% !important;
+    text-align: end;
+    color: #eeeeee;
+}
+
+.blind .vertical.range-container {
+    width: 100px;
+}
+/*Einbindung des Bildes des Rollladens für den Rollladen-Slider, zusätzlich Position, Größe und Darstellung*/
+.blind .vertical .range-bar {
+    width: 70%;
+    border-radius: 2px;
+    background-image: url(../images/Blinds.jpg);
+    background-position: center bottom;
+    background-blend-mode: multiply;
+    background-size: cover;
+    background-color: rgb(150,150,150) !important;
+}
+
+.blind .vertical .range-quantity {
+    border-radius: 3px;
+}
+
+.blind .vertical .range-handle {
+    margin-left: 52% !important;
+    z-index: 1
+}
+/*Einbindung des Bildes des Fensters für den Rollladen-Sliders, zusätzlich Position, Größe und Darstellung*/
+.blindview .vertical .range-quantity {
+    border-radius: 2px;
+    background-image: url(../images/WindowContentSimple.png);
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: cover;
+    background-blend-mode: difference;
+    background-color: rgb(64,64,64) !important;
+}
+
+.awning .vertical.range-container {
+    width: 100%;
+}
+
+.awning .vertical .range-bar {
+    width: 70%;
+    border-radius: 2px;
+    background-image: url(../awningContentSimpleGrey.png);
+    background-position: center bottom;
+    background-blend-mode: difference;
+    background-size: 100% 100%;
+}
+
+.awning .vertical .range-quantity {
+    border-radius: 3px;
+}
+
+.awning .vertical .range-handle {
+    margin-left: 52% !important;
+    z-index: 1
+}

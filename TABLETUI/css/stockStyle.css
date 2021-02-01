@@ -1,6 +1,8 @@
+/*CSS Datei für stockMain.html*/
+
 /*
- * Style for body elements
- * Disable Scrollbar
+ * Style für body Elemente
+ * Entfernen von Scrollbars
 */
 body {
     overflow: hidden;
@@ -8,10 +10,10 @@ body {
 
 
 /*
- * Style for table elements
- * Table cells are displayed with a common border
- * Set width to 95% of parent element
- * Set left margin to 2% of parent element
+ * Style für table Elemente
+ * Tabellenzellen haben einen gemeinsamen Rahmen
+ * Setzt Weite auf 95%
+ * Setzt den linken Rand auf 2%
 */
 table{
     border-collapse: collapse;
@@ -21,8 +23,8 @@ table{
 
 
 /*
- * Style for th elements inside Element with id = notifyHead
- * Set width to 20% of parent element
+ * Style für th Elemente im Element mit der ID "notifyHead"
+ * Setzt Weite auf 20%
 */
 #notifyHead th{
     width: 20%;
@@ -30,8 +32,8 @@ table{
 
 
 /*
- * Style for th elements inside Element with id = stockHead
- * Set width to 20% of parent element
+ * Style für th Elemente im Element mit der ID "stockHead"
+ * Setzt Weite auf 20%
 */
 #stockHead th{
     width: 20%;
@@ -39,11 +41,11 @@ table{
 
 
 /*
- * Style for td elements inside tr Elements inside tbody elements inside element with id = stockTable
- * Set width to 20% of parent element
- * Set solid border
- * Set border width to 1 pixel
- * Set border Color white
+ * Style für td Elemente in tr Elemente in tbody Elemente im Element mit der ID "stockTable"
+ * Setzt Weite auf 20%
+ * Erstellt einen festen Rand um das Element
+ * Setzt Rand auf eine Weite von 1 Pixel
+ * Setzt Randfarbe auf Weiß
 */
 #stockTable tbody tr td{
     width: 20%;
@@ -54,11 +56,11 @@ table{
 
 
 /*
- * Style for td elements inside tr Elements inside tbody elements inside element with id = notifyTable
- * Set width to 20% of parent element
- * Set solid border
- * Set border width to 1 pixel
- * Set border Color white
+ * Style für td Elemente in tr Elemente in tbody Elemente im Element mit der ID "notifyTable"
+ * Setzt Weite auf 20%
+ * Erstellt einen festen Rand um das Element
+ * Setzt Rand auf eine Weite von 1 Pixel
+ * Setzt Randfarbe auf Weiß
 */
 #notifyTable tbody tr td{
     width: 20%;
@@ -69,8 +71,8 @@ table{
 
 
 /*
- * Style for elements with class = tableBody
- * Add scrollbar to element if entire element does not fit inside screen
+ * Style für Elemente mit der Klasse "tableBody"
+ * Ermöglichen des Srollings
 */
 .tableBody{
     overflow: auto;
@@ -78,8 +80,8 @@ table{
 
 
 /*
- * Style for element with id = bodyStocks
- * Set height to 40 vh
+ * Style für das Element mit der ID "bodyStocks"
+ * Setzt Höhe auf 40% der Höhe des Viewports
 */
 #bodyStocks{
     height: 40vh;
@@ -87,8 +89,8 @@ table{
 
 
 /*
- * Style for element with id = bodyNotify
- * Set height to 26 vh
+ * Style für das Element mit der ID "bodyNotify"
+ * Setzt Höhe auf 26% der Höhe des Viewports
 */
 #bodyNotify{
     height: 26vh;
@@ -96,9 +98,9 @@ table{
 
 
 /*
- * Style for element with id = selectOptionChange
- * Disable border
- * Set width to 102% of parent element
+ * Style für das Element mit der ID "selectOptionChange"
+ * Entfernt Rahmen um das Element
+ * Setzt Weite auf 102%
 */
 #selectOptionChange {
     border: none;
@@ -106,30 +108,54 @@ table{
 }
 
 
-#stockChart {
-    width: inherit;
-    height: inherit;
+/*
+ * Style für das Element mit der ID "canvasDiv"
+ * Setzt Höhe auf 40% der Höhe des Viewports
+*/
+#canvasDiv{
+    height: 40vh;
 }
 
+
+/*
+ * Style für das Element mit der ID "selectOptionWKN"
+ * Setzt Weite auf 30%
+ * Setzt oberen Rand auf 15 Pixel
+*/
 #selectOptionNotifyWKN {
     width: 30%;
     margin-top: 15px;
 }
 
+
+/*
+ * Style für das Element mit der ID "selectOPtionNotifyContacts"
+ * Setzt Weite auf 30%
+ * Setzt oberen Rand auf 15 Pixel
+*/
 #selectOptionNotifyContacts {
     width: 30%;
     margin-top: 15px;
 }
 
+
+/*
+ * Style für alle Elemente mit der Klasse "notify"
+ * Setzt linken Füllbereich auf 0,1%
+*/
 .notify{
     padding-left: 0.1%;
 }
 
-#sheetPerformance{
-    width: inherit;
-    height: inherit;
-}
 
+/*
+ * Style für alle Elemente mit der Klasse "buttonCell"
+ * Zentriert den Text
+ * Setzt Farbe auf den Wert FF9F00
+ * Setzt Höhe auf 50 Pixel
+ * Setzt Hintergrundfarbe auf die selbe des Elternelements
+ * Entfern Rahmen um das Element
+*/
 .buttonCell{
     text-align-all: center;
     color:#FF9F00;
@@ -137,29 +163,62 @@ table{
     background-color: inherit;
     border: none;
 }
+
+
+/*
+ * Style für alle Elemente mit der Klasse "buttonCell", wenn sich der Mauszeiger auf dem Element befindet
+ * Setzt die Farbe auf weiß
+ * Ändert Mauszeiger zu einem Pointer
+*/
 .buttonCell:hover{
     color:white;
     cursor: pointer;
 }
 
+
+/*
+ * Style für das Element mit der ID "addStockButton"
+ * Setzt linken Rahmen auf 5%
+ * Setzt oberen Rahmen auf 20 Pixel
+*/
 #addStockButton{
     margin-left: 5%;
     margin-top: 20px;
 }
 
+
+/*
+ * Style für das Element mit der ID "addNotifyButton"
+ * Setzt linken Rahmen auf 1%
+ * Setzt oberen Rahmen auf 20 Pixel
+*/
 #addNotifyButton{
     margin-left: 1%;
     margin-top: 20px;
 }
 
+
+/*
+ * Style für alle select Elemente
+ * select Elemnte ziéigen kleinen Pfeil am linken Rand
+*/
 select {
     -webkit-appearance: listbox;
 }
 
+
+/*
+ * Style für das Element mit der ID "selectOptionChange"
+ * Setzt Weite auf 100 Pixel
+*/
 #selectOptionChange{
     width: 100px;
 }
 
+/*
+ * Style Elemente mit dem Attribut contentEditable=true
+ * Attribut data-text wird über dem Element angezeigt
+*/
 [contentEditable=true]:not(:focus):before{
     content:attr(data-text)
 }

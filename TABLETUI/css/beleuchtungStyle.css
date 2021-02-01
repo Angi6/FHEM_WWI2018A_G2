@@ -1,0 +1,44 @@
+/*--------Accordion 1 Grau/Orange -------*/
+
+.accordion .panel {
+    margin: 0 auto;
+    height: 0;
+    overflow:hidden;
+    background-color: #2A2A2A;
+    line-height: 1.4;
+    padding: 0 20px;
+    box-sizing: border-box;
+    transition: all 0.5s;
+  }
+  
+  .accordion input:checked~.panel {
+    height: auto;
+    color: rgb(231, 228, 228);
+    padding: 20px;
+    transition: all 0.5s;
+  }
+  
+  .accordion label {
+    cursor: pointer;
+    background-color: #393939;
+    border-bottom: 2px solid #111111;
+    display: block;
+    padding: 15px;
+    width: 100%;
+    color: #eeeeee;
+    font-weight: 400;
+    box-sizing: border-box;
+    z-index: 100;
+  }
+  
+  .accordion input{
+    display: none;
+  }
+  
+  .accordion input:checked+label {
+    background-color: #aa6900;
+  }
+  
+  .accordion input:checked+label:before {
+    transition: 0.5s;
+  }

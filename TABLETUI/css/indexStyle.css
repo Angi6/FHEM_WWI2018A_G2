@@ -1,0 +1,75 @@
+/*CSS-Datei für index.html*/
+
+
+/*
+ * Style für body Elemente
+ * Entfernen der Scrollbars
+*/
+body{
+    overflow: hidden;
+}
+
+
+/*
+ * Style für table Elemente
+ * Ein gemeinsamer Rahmen für die Zellen
+ * Setzt Weite auf 95%
+ * Setzt linken Rahmen auf 2%
+*/
+table{
+    border-collapse: collapse;
+    width: 95%;
+    margin-left: 2%;
+}
+
+
+/*
+ * Style für Elemente mit der Klasse "tableBody"
+ * Tabelle scrollbar machen
+*/
+.tableBody{
+    overflow: auto;
+}
+
+
+/*
+ * Style für td Elemente in tr Elemente in tbody Elemente im Element mit der ID "stockTable"
+ * Setzt Weite auf 25%
+ * Setzt Rahmen um das Element
+ * Setzt Rahmenweite auf 1 Pixel
+ * Setzt Rahmenfarbe auf weiß
+*/
+#stockTable tbody tr td{
+    width: 25%;
+    border: solid;
+    border-width: 1px 0;
+    border-color: #FFFFFF;
+}
+
+/*
+ * Style für tr Elemente in tbody Elemente im Element mit der ID "stockTable"
+ * Setzt Höhe auf 50 Pixel
+*/
+#stockTable tbody tr{
+    height: 50px;
+}
+
+
+/*
+ * Style für Element mit der ID "bodyStocks"
+ * Setzt oberen Rahmen auf 10 Pixel
+ * Setzt Höhe auf 26% der Höhe des Viewports
+*/
+#bodyStocks{
+    margin-top: 10px;
+    height: 26vh;
+}
+
+
+/*
+ * Style für th Elemente im Element mit der ID "stockHead"
+ * Setzt Weite auf 25%
+*/
+#stockHead th{
+    width: 25%;
+}
