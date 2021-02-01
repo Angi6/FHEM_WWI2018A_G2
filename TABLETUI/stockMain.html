@@ -13,7 +13,11 @@
      * Under MIT License (http://www.opensource.org/licenses/mit-license.php)
 
     -->
+
+    <!--Hinzufügen von FHEM-Icons-->
     <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+
+    <!--Hinzufügen der stockStyle.css-->
     <link rel="stylesheet" type="text/css" href="css/stockStyle.css">
 
     <!--Reload der Seite alle 10 Minuten, damit Daten aktuell bleiben-->
@@ -30,15 +34,23 @@
 <body>
 <div class="gridster" id="stockGrid">
     <ul>
+        <!--Navigationsleiste von Reihe 1 bis 5 und Spalte 1 bis 1-->
         <li data-row="1" data-col="1" data-sizex="1" data-sizey="5" data-template="/fhem/ftui/navigation.html"></li>
 
+        <!--Abschnitt für die graphische Darstellung der Aktien von Reihe 1 bis 3 und Spalte 2 bis 5-->
         <li data-row="1" data-col="2" data-sizey="3" data-sizex="4">
+
+            <!--Setzt Abschnittsüberschrift auf Aktienverlauf-->
             <header>Aktienverlauf</header>
+
             <div class="sheet" id="sheetPerformance">
-                <div class="row" >
+                <div class="row">
                     <div class="hbox">
+                        <!--Dropdown-Menü, mit welcher eine Aktie ausgewählt werden kann-->
                         <select name="selectPerformance" id="selectOptionPerformance">
                         </select>
+
+                        <!--Dropdown-Menü, mit welcher der Zeitraum ausgewählt werden kann-->
                         <select name="selectTimes" id="selectOptionTimes">
                             <option value="1">Letzten 24h anzeigen</option>
                             <option value="2">Letzten 7 Tage anzeigen</option>
@@ -46,30 +58,43 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="row" id="canvasDiv">
+                    <!--Canvas Element in welchem der Graph angzeigt wird-->
                     <canvas id="stockChart"></canvas>
                 </div>
             </div>
         </li>
 
+        <!--Abschnitt für die tabellarische Darstellung der Aktien von Reihe 1 bis 3 und Spalte 6 bis 8-->
         <li data-row="1" data-col="6" data-sizey="3" data-sizex="3">
+            <!--Setzt Abschnittsüberschrift auf Aktienuebersicht-->
             <header>Aktienuebersicht</header>
             <div class="sheet">
                 <div class="row">
                     <div class="hbox">
+                        <!--Input-Element zur Eingabe der WKN-Nummer einer Aktie-->
                         <div data-type="input"
                              contentEditable=true
                              data-text="WKN eingeben"
                              id="sendWKN"
                              class="notransmit"
                         aria-placeholder="WKN"></div>
+
+                        <!--Button-Element um neue Aktie hinzuzufügen-->
                         <button
                              class="round link buttonCell"
                              id="addStockButton">Aktie hinzufügen
                         </button>
                     </div>
                 </div>
+
+                <!--Abschnitt für die scrollbare Aktientabelle
+                    Tabelle besteht aus zwei Tabellen, eine für die Überschriften und
+                    eine für den Inhalt-->
                 <div class="row">
+
+                    <!--Abschnitt für die Überschriftszeile der Tabelle-->
                     <div class="header">
                         <table>
                             <tr id="stockHead">
@@ -78,52 +103,72 @@
                                 <th>Wert</th>
                                 <th>
                                     <select name="selectChange" id="selectOptionChange">
-                                        <option value="1">Aenderung %</option>
-                                        <option value="2">Aenderung €</option>
+                                        <option value="RelativeChange">Aenderung %</option>
+                                        <option value="AbsolutChange">Aenderung €</option>
                                     </select>
                                 </th>
                                 <th></th>
                             </tr>
                         </table>
                     </div>
+
+                    <!--Abschnitt für den Tabellenkörper-->
                     <div class="tableBody" id="bodyStocks">
                         <table id="stockTable">
-
                         </table>
                     </div>
                 </div>
             </div>
         </li>
 
+        <!--Abschnitt für die Benachrichtigungen von Reihe 4 bis 5 und Spalte 2 bis 8-->
         <li data-row="4" data-col="2" data-sizey="2" data-sizex="7">
+            <!--Setzt Abschnittsüberschrift auf Benachrichtigungen-->
             <header>Benachrichtigungen</header>
             <div class="sheet">
                 <div class="row">
                     <div class="hbox">
+                        <!--Dropdownmenü zur Auswahl der Kontakte-->
                         <select name="selectNotifyContacts"
                                 id="selectOptionNotifyContacts"
-                                size="1" multiple></select>
+                                size="2" multiple></select>
+
+                        <!--Dropdownmenü zur Auswahl der Aktie-->
                         <select name="selectNotifyWKN" id="selectOptionNotifyWKN">
                         </select>
+
+                        <!--Eingabefeld zur Eingabe der Zeit-->
                         <div data-type="input"
                              data-value="24"
                              contentEditable=true
                              data-text="Zeiteingabe [h]"
                              id="sendTime"
                              class="notransmit notify"></div>
+
+                        <!--Eingabefeld zur Eingabe des Prozentwerts-->
                         <div data-type="input"
                              data-value="5"
                              contentEditable=true
                              data-text="Prozenteingabe"
                              id="sendPercentage"
                              class="notransmit notify"></div>
+
+                        <!--button-Element um neue Benachrichtigung hinzuzufügen-->
                         <button id="addNotifyButton"
                         class="buttonCell notify">
                             Benachrichtigung hinzufuegen
                         </button>
                     </div>
                 </div>
+
+                <!--Abschnitt für die scrollbare Benachrichtigungstabelle
+                    Tabelle besteht aus zwei Tabellen, eine für die Überschriften und
+                    eine für den Inhalt-->
+
+
                 <div class="row">
+
+                    <!--Abschnitt für die Überschriftszeile der Tabelle-->
                     <div class="header">
                         <table>
                             <tr id="notifyHead">
@@ -135,6 +180,8 @@
                             </tr>
                         </table>
                     </div>
+
+                    <!--Abschnitt für den Tabellenkörper-->
                     <div class="tableBody" id="bodyNotify">
                         <table id="notifyTable">
 
@@ -145,9 +192,13 @@
         </li>
     </ul>
 </div>
+<!--Hinzufügen von jQuery-->
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<!--Hinzufügen der Tablet-UI Funktionalitäten-->
 <script src="js/fhem-tablet-ui.js" defer></script>
+<!--Hinzufügen von Chart.js-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+<!--Hinzufügen von JSStock.js-->
 <script src="js/JSStock.js"></script>
 </body>
 
